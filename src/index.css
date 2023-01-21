@@ -1,0 +1,92 @@
+body {
+    background-color: rgb(218, 215, 215);
+    padding: 50px;
+    justify-content: center;
+    display: flex;
+    align-items: center;
+    min-height: 100vh;
+}
+
+#root {
+    display: inline-flex;
+    flex-direction: column;
+    /* border: 1px solid; */
+    width: 800px;
+}
+form {
+    display: flex;
+    flex-direction: row;
+    border: 1px solid darkslategray;
+    padding: 20px;
+}
+
+button {
+    margin: 3px 10px;
+    width: 125px;
+    border: none;
+    outline: none;
+    background-color: #929eaa;
+    border-radius: 5px;
+    padding: 5px;
+}
+
+button:hover {
+    cursor: pointer;
+    background-color: #224669;
+}
+
+form input[type="text"] {
+    width: 100%;
+    padding-left: 20px;
+}
+
+form button:nth-of-type(2){
+    margin-left:125px;
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+    max-width: 800px;
+}
+
+
+.profile {
+    display: flex;
+    flex-direction: row;
+    gap:30px;
+    padding: 20px;
+    border-bottom: 2px solid darkslategray;
+    align-items: center;
+    justify-content: space-evenly;
+}
+
+.profile h3:hover,.profile h4:hover, .profile img:hover {
+    cursor: pointer;
+}
+
+.app {
+    display:flex;
+    flex-direction: column;
+}
+
+.album {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 10px;
+}
+.albums p{
+    font-size: 12px;
+    margin: 0;
+}
+.albums h4 {
+    font-size: 16px;
+    margin: 0;
+    padding-right:20px;
+}
+
+.albums {
+    height: 300px;
+    overflow-y: scroll;
+}

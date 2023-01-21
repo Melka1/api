@@ -7,26 +7,31 @@ import "bootstrap/dist/css/bootstrap.min.css";
 export default function App(){
     const [tokken, setTokken] = useState("")
     const [type, setType] = useState("")
+    const [albums, setAlbums] = useState({
+        id: "",
+        data: []
+    })
 
     const token = window.localStorage.getItem("accessToken");
     let toke = {}
     let dash = window.location.hash;
-    if(!token && dash){
-        const hash = window.location.hash.substring(1).split("&");
-        if(token && hash) return
-        hash.forEach(value=>{
-            let arr = value.split("=")
-            toke[arr[0]] = arr[1]
-        })
-        console.log(toke)
-        localStorage.setItem("accessToken", toke["access_token"])
-        //window.location.hash = ""
-    }
+    useEffect(()=>{
+        if(!token && dash){
+            const hash = window.location.hash.substring(1).split("&");
+            if(token && hash) return
+            hash.forEach(value=>{
+                let arr = value.split("=")
+                toke[arr[0]] = arr[1]
+            })
+            console.log(toke)
+            localStorage.setItem("accessToken", toke["access_token"])
+        }
+    }, [])
 
     const handleSearch = async (e) =>{
         e.preventDefault()
         console.log("JSON.stringify(data)")
-        const {data} = await axios.get("https://api.spotify.com/v1/search" , {
+        const {data} = await axios.get("https://api.spotify.com/v1/search?limit=10" , {
             headers: {
                 Authorization: "Bearer "+ token
             },
@@ -36,42 +41,67 @@ export default function App(){
             }
         })
 
-        console.log(JSON.stringify(data))
+        //console.log(data.artists.items.forEach(item => console.log(item.followers.total, item.name, item.images[2]?item.images[2].url:"")))
+        console.log(data.artists.items)
         setTokken(data.artists.items)
     }
+    
+    const searchAlbum = async (e, id) =>{
+        console.log("JSON.stringify(data)")
+        const {data} = await axios.get(`https://api.spotify.com/v1/artists/${id}/albums?market=ES&limit=10&offset=1` , {
+            headers: {
+                Authorization: "Bearer "+ token
+            },
+         })
 
-    function playMe(id){
-        let sound = document.getElementById(id)
-        sound.play()
-        console.log(id, "to be played")
+        console.log(id, data.items)
+        setAlbums({id:id, data:data.items})
     }
 
     return (
         <>
             {!token ? <Login /> :""}
             {token? 
-            <div>
+            <div className="app">
                 <form onSubmit={handleSearch}>
                     <input type="text" value={type} onChange={(e)=>setType(e.target.value)} />
                     <button type={"submit"}>Search</button>
-                    <p>{type}</p>
-                    <p>{tokken&&tokken.map((value, id)=>{
-                        return (
-                        <div key={id}>
-                            <p >{value.name}______{value.id}</p>
-                            <img src={value.images[2].url}  alt={id} />
-                        </div>
-                        )
-                    })}</p>
+                    <button onClick={()=>{window.localStorage.removeItem("accessToken"); setTokken("")}}>Log Out</button>
                 </form>
-
-                <button onClick={()=>{window.localStorage.removeItem("accessToken"); setTokken("")}}>Log Out</button>
+                <div className="container">{tokken&&tokken.map((value, id)=>{
+                    return (
+                    <div key={id} className="profile">
+                        <img onClick={(e)=>searchAlbum(e, value.id)} width="150px" height="150px" src={value.images[1]?value.images[1].url:""}  alt={id} />
+                        <div>
+                            <h3 onClick={(e)=>searchAlbum(e, value.id)}>{value.name}</h3>
+                            <hr/>
+                            <p>{value.genres[0]}</p>
+                            <p>{value.followers.total}</p>
+                        </div>
+                        {albums.data!=[]&&value.id===albums.id?
+                            <div className="albums">
+                                {albums.data.map(val=>{
+                                    return (
+                                        <div key={val.id} className="album">
+                                            <img width="75px" height="75px" src={val.images[2]?val.images[2].url:""} alt={val.id} />
+                                            <div>
+                                                <h4>{val.name}</h4>
+                                                <p>{val.release_date}</p>
+                                                <p>{val.id}</p>
+                                            </div>
+                                        </div>
+                                    )
+                                })}
+                            </div>
+                        :""}
+                        
+                    </div>
+                    )
+                })}</div>
+                                
             </div>:""}
         </>
         )
 }
 
-
-//#access_token=BQBVzOn9zxdE2XCnez2Q0mst8raWmXQ0tJaqPq67BLwIboQGeAjJSqi-VDrHvHDeHRws61z1Z9mCU9Bp6M38j7AHjaUc7rARh8vlzGobbiqwjIQe_nEk90LUaoG20Hb3aOKCcdqyL5wn5gFCvYw4TTXKKdbqrlHWX1AxY1C66O7Urv-jzhbu9O0yR0ovbFi5eELD0ZFIG_wr33itTKkklGtnk5Q-oGzsav-c92U3ZV-yaywK0w
-//&token_type=Bearer
-//&expires_in=3600
+//https://api.spotify.com/v1/artists/{id}/albums
