@@ -3,6 +3,7 @@ import Login from "./Login";
 //import Dashboard from "./Dashboard";
 import axios from "axios";
 import "bootstrap/dist/css/bootstrap.min.css";
+let proStyle = {}
 
 export default function App(){
     const [tokken, setTokken] = useState("")
@@ -41,7 +42,6 @@ export default function App(){
             }
         })
 
-        //console.log(data.artists.items.forEach(item => console.log(item.followers.total, item.name, item.images[2]?item.images[2].url:"")))
         console.log(data.artists.items)
         setTokken(data.artists.items)
     }
@@ -63,24 +63,25 @@ export default function App(){
             {!token ? <Login /> :""}
             {token? 
             <div className="app">
-                <form onSubmit={handleSearch}>
+                <form id="0" onSubmit={handleSearch}>
                     <input type="text" value={type} onChange={(e)=>setType(e.target.value)} />
                     <button type={"submit"}>Search</button>
                     <button onClick={()=>{window.localStorage.removeItem("accessToken"); setTokken("")}}>Log Out</button>
                 </form>
-                <div className="container">{tokken&&tokken.map((value, id)=>{
+                <div  className="container">{tokken&&tokken.map((value, id)=>{
                     return (
-                    <div key={id} className="profile">
-                        <img onClick={(e)=>searchAlbum(e, value.id)} width="150px" height="150px" src={value.images[1]?value.images[1].url:""}  alt={id} />
+                    <div key={id} className="profile" id={id+""} style={value.id===albums.id?proStyle:{}}>
+                        <a href={"#0"}><img onClick={(e)=>searchAlbum(e, value.id)} width="150px" height="150px" src={value.images[1]?value.images[1].url:""}  alt={id} /></a>
                         <div>
-                            <h3 onClick={(e)=>searchAlbum(e, value.id)}>{value.name}</h3>
+                        <a href={"#0"}><h3 onClick={(e)=>searchAlbum(e, value.id)}>{value.name}</h3></a>
                             <hr/>
                             <p>{value.genres[0]}</p>
                             <p>{value.followers.total}</p>
                         </div>
                         {albums.data!=[]&&value.id===albums.id?
-                            <div className="albums">
+                            <div className="albums" >
                                 {albums.data.map(val=>{
+                                    proStyle = {gridColumn:"1/-1",gridRow:"1/2"}
                                     return (
                                         <div key={val.id} className="album">
                                             <img width="75px" height="75px" src={val.images[2]?val.images[2].url:""} alt={val.id} />
