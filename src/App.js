@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Login from "./Login";
+import image from "./noimage.jpg"
 //import Dashboard from "./Dashboard";
 import axios from "axios";
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -12,7 +13,10 @@ export default function App(){
         id: "",
         data: []
     })
-
+    const [track, setTrack] = useState({
+        id: "",
+        data: []
+    })
     const token = window.localStorage.getItem("accessToken");
     let toke = {}
     let dash = window.location.hash;
@@ -27,7 +31,7 @@ export default function App(){
             console.log(toke)
             localStorage.setItem("accessToken", toke["access_token"])
         }
-    }, [])
+    })
 
     const handleSearch = async (e) =>{
         e.preventDefault()
@@ -48,7 +52,7 @@ export default function App(){
     
     const searchAlbum = async (e, id) =>{
         console.log("JSON.stringify(data)")
-        const {data} = await axios.get(`https://api.spotify.com/v1/artists/${id}/albums?market=ES&limit=10&offset=1` , {
+        const {data} = await axios.get(`https://api.spotify.com/v1/artists/${id}/albums?limit=10&offset=1` , {
             headers: {
                 Authorization: "Bearer "+ token
             },
@@ -56,6 +60,25 @@ export default function App(){
 
         console.log(id, data.items)
         setAlbums({id:id, data:data.items})
+    }
+
+    const searchTrack = async (e, id) =>{
+        console.log("JSON.stringify(data)")
+        const {data} = await axios.get(`https://api.spotify.com/v1/albums/${id}/tracks?&limit=10&offset=1` , {
+            headers: {
+                Authorization: "Bearer "+ token
+            },
+         })
+
+        console.log(id, data.items)
+        setTrack({id:id, data:data.items})
+    }
+
+
+    const style = {
+        flexDirection: 'column',
+        width: "40%",
+        margin: "auto"
     }
 
     return (
@@ -71,20 +94,22 @@ export default function App(){
                 <div  className="container">{tokken&&tokken.map((value, id)=>{
                     return (
                     <div key={id} className="profile" id={id+""} style={value.id===albums.id?proStyle:{}}>
-                        <a href={"#0"}><img onClick={(e)=>searchAlbum(e, value.id)} width="150px" height="150px" src={value.images[1]?value.images[1].url:""}  alt={id} /></a>
-                        <div>
-                        <a href={"#0"}><h3 onClick={(e)=>searchAlbum(e, value.id)}>{value.name}</h3></a>
-                            <hr/>
-                            <p>{value.genres[0]}</p>
-                            <p>{value.followers.total}</p>
+                        <div className="artist" style={value.id===albums.id?style:{}}>
+                            <a href={"#0"}><img onClick={(e)=>searchAlbum(e, value.id)} width="150px" height="150px" src={value.images[1]?value.images[1].url:image}  alt={id} /></a>
+                            <div>
+                            <a href={"#0"}><h3 onClick={(e)=>searchAlbum(e, value.id)}>{value.name}</h3></a>
+                                <hr/>
+                                <p>{value.genres[0]}</p>
+                                <p>{value.followers.total}</p>
+                            </div>
                         </div>
                         {albums.data!=[]&&value.id===albums.id?
                             <div className="albums" >
                                 {albums.data.map(val=>{
                                     proStyle = {gridColumn:"1/-1",gridRow:"1/2"}
                                     return (
-                                        <div key={val.id} className="album">
-                                            <img width="75px" height="75px" src={val.images[2]?val.images[2].url:""} alt={val.id} />
+                                        <div key={val.id} className="album" onClick={(e)=>searchTrack(e, val.id)}>
+                                            <img width="75px" height="75px" src={val.images[2]?val.images[2].url:image} alt={val.id} />
                                             <div>
                                                 <h4>{val.name}</h4>
                                                 <p>{val.release_date}</p>
@@ -95,8 +120,8 @@ export default function App(){
                                 })}
                             </div>
                         :""}
-                        
                     </div>
+                    
                     )
                 })}</div>
                                 

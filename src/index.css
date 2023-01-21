@@ -1,6 +1,6 @@
 body {
     background-color: rgb(218, 215, 215);
-    padding: 50px;
+    /* padding: 50px; */
     justify-content: center;
     display: flex;
     align-items: center;
@@ -16,8 +16,9 @@ body {
 form {
     display: flex;
     flex-direction: row;
-    border: 1px solid darkslategray;
+    /* border: 1px solid darkslategray; */
     padding: 20px;
+    background-color: black;
 }
 
 button {
@@ -50,17 +51,21 @@ form button:nth-of-type(2){
     grid-auto-flow: dense;
     gap: 30px;
     max-width: 800px;
+    background-color:darkslategray;
+    padding:20px;
 }
 
 
 .profile {
     display: flex;
     flex-direction: row;
-    gap:30px;
-    padding: 20px;
-    border-bottom: 2px solid darkslategray;
+    gap:20px;
+    padding: 10px 10px;
+    padding-left: 20px;
+    border: 2px solid #adc7c7;
     align-items: center;
-    justify-content: space-evenly;
+    /* justify-content: space-evenly; */
+    color: black;
 }
 
 .profile h3:hover,.profile h4:hover, .profile img:hover {
@@ -76,10 +81,14 @@ form button:nth-of-type(2){
     display: flex;
     gap: 15px;
     margin-bottom: 10px;
+    border:1px solid lightgray;
+    border-right: none;
+    border-top: none; 
 }
 .albums p{
     font-size: 12px;
     margin: 0;
+    color: black;
 }
 .albums h4 {
     font-size: 16px;
@@ -90,4 +99,29 @@ form button:nth-of-type(2){
 .albums {
     height: 300px;
     overflow-y: scroll;
+    width: 50%;
+    color: black;
+}
+
+a {
+    text-decoration: none;
+    color:Black;
+    text-align: center;
+}
+
+hr {
+    border:1px solid #ffffff;
+    opacity: 1;
+    margin-bottom:0 ;
+}
+
+.artist {
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+}
+.artist h3 {
+    font-family: 'Courier New', Courier, monospace;
+    font-weight: bold;
+    /* font-size: 14px; */
 }
