@@ -56,20 +56,26 @@ form button:nth-of-type(2){
 }
 
 
-.profile {
+.profile-container {
     display: flex;
-    flex-direction: row;
-    gap:20px;
-    padding: 10px 10px;
-    padding-left: 20px;
+    flex-direction: column;;
+    /* gap:20px; */
+    /* padding: 10px 10px; */
+    /* padding-left: 20px; */
     border: 2px solid #adc7c7;
     align-items: center;
     /* justify-content: space-evenly; */
     color: black;
 }
 
-.profile h3:hover,.profile h4:hover, .profile img:hover {
+.profile-container h3:hover,.profile h4:hover, .profile img:hover {
     cursor: pointer;
+}
+
+.profile {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
 }
 
 .app {
@@ -101,6 +107,27 @@ form button:nth-of-type(2){
     overflow-y: scroll;
     width: 50%;
     color: black;
+}
+
+.tracks {
+    width: 100%;
+    border-top: 1px solid white;
+    max-height: 250px;
+    overflow-y: auto;
+    padding: 10px;
+}
+
+.track {
+    display: flex;
+    margin: 10px;
+    background-color: #929eaa;
+    align-items: center;
+    align-content: center;
+    padding: 10px;
+}
+
+.track * {
+    margin: 0;
 }
 
 a {
