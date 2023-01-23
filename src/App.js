@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Login from "./Login";
 import image from "./noimage.jpg"
-//import Dashboard from "./Dashboard";
 import axios from "axios";
 import "bootstrap/dist/css/bootstrap.min.css";
 let proStyle = {}
@@ -18,10 +17,12 @@ export default function App(){
         data: []
     })
     const [currentArtist, setCurrentArtist] = useState("")
-
+    const [play, setPlay] = useState({id:"", state:true})
     const token = window.localStorage.getItem("accessToken");
+
     let toke = {}
     let dash = window.location.hash;
+
     useEffect(()=>{
         if(!token && dash){
             const hash = window.location.hash.substring(1).split("&");
@@ -79,6 +80,9 @@ export default function App(){
         setTrack({id:id, data:data.items})
     }
 
+    function handlePlay(id){
+        setPlay({id:id, state:!play.state})
+    }
 
     const style = {
         flexDirection: 'column',
@@ -94,7 +98,7 @@ export default function App(){
                 <form id="0" onSubmit={handleSearch}>
                     <input type="text" value={type} onChange={(e)=>setType(e.target.value)} />
                     <button type={"submit"}>Search</button>
-                    <button onClick={()=>{window.localStorage.removeItem("accessToken"); setTokken("")}}>Log Out</button>
+                    <button onClick={()=>{window.localStorage.removeItem("accessToken"); setTokken("");window.location = "/"}}>Log Out</button>
                 </form>
                 <div  className="container">{tokken&&tokken.map((value, id)=>{//mapping through artists
                     return (
@@ -144,6 +148,23 @@ export default function App(){
                                     <div key={val.id} className="track" >
                                         <h5>{val.name}</h5>
                                         <p>Duration- {mm} : {ss}</p>
+                                        <div className="control">
+                                            <span class="material-symbols-outlined">
+                                                skip_previous
+                                                </span>
+                                            <span class="material-symbols-outlined" onClick={()=>handlePlay(val.id)}>
+                                                {play.id==val.id&&play.state?"play_circle":"pause_circle"}
+                                            </span>
+                                            <span class="material-symbols-outlined">
+                                                skip_next
+                                            </span>
+                                            <span class="material-symbols-outlined">
+                                                repeat
+                                            </span>
+                                            <span class="material-symbols-outlined">
+                                                shuffle
+                                            </span>
+                                        </div>
                                     </div>
                                 )
                             })}
@@ -156,5 +177,3 @@ export default function App(){
         </>
     )
 }
-
-//https://api.spotify.com/v1/artists/{id}/albums

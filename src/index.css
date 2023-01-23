@@ -59,12 +59,10 @@ form button:nth-of-type(2){
 .profile-container {
     display: flex;
     flex-direction: column;;
-    /* gap:20px; */
-    /* padding: 10px 10px; */
-    /* padding-left: 20px; */
+    padding: 10px;
+    padding-right: 0;
     border: 2px solid #adc7c7;
     align-items: center;
-    /* justify-content: space-evenly; */
     color: black;
 }
 
@@ -123,11 +121,31 @@ form button:nth-of-type(2){
     background-color: #929eaa;
     align-items: center;
     align-content: center;
-    padding: 10px;
+    padding: 1px 10px;
 }
 
 .track * {
     margin: 0;
+}
+
+.track p {
+    margin-left: auto;
+
+}
+.track h5 {
+    width: 55%;
+    font-size: 1rem;
+}
+
+.control span {
+    line-height: 2.5rem;
+}
+.control span:hover {
+    cursor: pointer;
+}
+
+.control {
+    margin-left: 25px;
 }
 
 a {
