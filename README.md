@@ -5,6 +5,12 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 ## Available Scripts
 
 In the project directory, you can run:
+## Dependencies
+
+Before starting the project you need to install these three dependencies
+1. Bootstrap
+2. React-bootstrap
+3. Axios
 
 ### `npm start`
 
